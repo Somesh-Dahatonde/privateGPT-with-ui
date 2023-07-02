@@ -93,6 +93,8 @@ from langchain.vectorstores import Chroma
 from langchain.llms import GPT4All, LlamaCpp
 import os
 import time
+from constants import CHROMA_SETTINGS
+
 
 load_dotenv()
 
