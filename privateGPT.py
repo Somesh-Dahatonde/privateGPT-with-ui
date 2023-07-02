@@ -138,7 +138,7 @@ def question_api():
     return jsonify({'answer': answer})
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
 
 # import time
 # from flask import Flask, jsonify, request, Response
