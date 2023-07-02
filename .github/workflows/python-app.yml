@@ -36,8 +36,8 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Download Model Repository
       run: |
-        mkdir modules  # Create the modules folder if it doesn't exist
-        cd modules
+        mkdir models  # Create the modules folder if it doesn't exist
+        cd models
         wget https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin
     - name: Start Flask Server
       run: python privateGPT.py
