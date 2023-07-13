@@ -34,6 +34,7 @@ jobs:
           python ingest.py
       - name: Install Gunicorn
         run: pip install gunicorn
+             pip install waitress
       - name: Start Server
         run: gunicorn privateGPT:app
 #     - name: Test with pytest
