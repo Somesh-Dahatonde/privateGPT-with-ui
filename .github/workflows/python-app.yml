@@ -32,6 +32,8 @@ jobs:
         run: |
           mkdir db  # Create the modules folder if it doesn't exist
           python ingest.py
+      - name: Install Gunicorn
+        run: pip install gunicorn
       - name: Start Server
         run: gunicorn privateGPT:app
 #     - name: Test with pytest
