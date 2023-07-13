@@ -5,33 +5,35 @@ name: Deploy Application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Download Model Repository
-      run: |
-        mkdir models  # Create the modules folder if it doesn't exist
-        cd models
-        wget https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin
-    - name: Start Flask Server
-      run: python privateGPT.py
-
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Download Model Repository
+        run: |
+          mkdir models  # Create the modules folder if it doesn't exist
+          cd models
+          wget https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin
+     - name: feeding Repository
+        run: |
+          mkdir db  # Create the modules folder if it doesn't exist
+          ingest.py
+      - name: Start Server
+        run: gunicorn privateGPT:app
 #     - name: Test with pytest
 #       run: |
 #         pytest
