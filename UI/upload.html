@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Document Uploader</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.6/dist/full.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl mb-4">Document Uploader</h1>
+        <div class="mb-4">
+            <form id="document-upload-form">
+                <input type="file" id="document-upload" class="input input-bordered"
+                    accept=".csv,.doc,.docx,.enex,.eml,.epub,.html,.md,.odt,.pdf,.ppt,.pptx,.txt">
+            </form>
+        </div>
+        <div class="mb-4">
+            <button id="upload-button" class="btn btn-primary">Upload Document</button>
+            <button id="feed-button" class="btn">Feed the Document</button>
+        </div>
+        <div id="upload-response" class="text-green-600"></div>
+        <div id="feed-response" class="text-green-600"></div>
+    </div>
+
+    <script>
+        const uploadButton = document.getElementById('upload-button');
+        uploadButton.addEventListener('click', handleDocumentUpload);
+
+        const feedButton = document.getElementById('feed-button');
+        feedButton.addEventListener('click', handleFeedDocument);
+
+        function handleDocumentUpload(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            const fileInput = document.getElementById('document-upload');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('document', file);
+
+                // Make an API call to upload the document
+                fetch('http://127.0.0.1:5000/api/upload_document', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const uploadResponse = document.getElementById('upload-response');
+                        uploadResponse.textContent = data.message;
+                        alert('Document uploaded successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                alert('Please select a document to upload');
+            }
+        }
+
+        function handleFeedDocument() {
+            // Make an API call to feed the document
+            fetch('http://127.0.0.1:5000/api/process_document')
+                .then(response => response.json())
+                .then(data => {
+                    const feedResponse = document.getElementById('feed-response');
+                    feedResponse.textContent = data.message;
+                    alert('Document fed successfully');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
